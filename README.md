@@ -6,7 +6,7 @@ An AI-assisted Godot reaction-game practice project where a player keeps a relay
 
 ## Current status
 
-The local game, automated logic checks, and local runtime screenshots exist. This project has no public source repository, public demo, tracker-time evidence, or Stardance submission claim. Visible-window manual testing is still incomplete.
+The local game, automated logic checks, local runtime screenshots, and a public source repository exist. This project has no public playable demo, tracker-time evidence, or Stardance submission claim. Visible-window manual testing is still incomplete.
 
 ## How it plays
 
@@ -75,7 +75,8 @@ All images below were captured from the local non-headless Godot runtime on 2026
 
 ## Public links
 
-No public source URL or public playable demo URL has been created yet. This section will only be updated with links after they exist and are verified.
+- Source: [GitHub repository](https://github.com/aaravkatiyar55-gif/rapid-relay-signal-shift)
+- Playable demo: not published yet. The required Godot Web export templates are not installed locally.
 
 ## Known limitations
 
