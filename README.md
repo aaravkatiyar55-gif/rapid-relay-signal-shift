@@ -95,7 +95,7 @@ All images below were captured from the actual local Godot 4.7.1 runtime on 2026
 
 - Built with Godot 4.7 and GDScript.
 - Uses Godot's built-in fallback font.
-- Project-specific SVGs in `assets/`: relay icon, signal bars, result stamps, KITE drone, and Luma Bay.
+- Project-specific SVGs in `assets/`: relay icon, signal bars, result stamps, KITE drone, Luma Bay, and the neon boot-splash source. The matching boot-splash PNG was rendered locally from that source for Godot's required format.
 - No downloaded sprite pack, external font, music, or Nintendo asset is included.
 
 The source, visual assets, story copy, tests, and documentation in this practice build were produced with substantial OpenAI Codex assistance. They are stored in the repository so their origin is not hidden.

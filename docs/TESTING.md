@@ -13,7 +13,7 @@ Testing is separated into source inspection, automated Godot checks, local runti
 - Confirmed one Godot 4 project with a 960×540 viewport and Web export preset.
 - Confirmed nine runtime scenes: menu, game controller, five minigames, win, and death.
 - Confirmed five distinct minigame scripts with keyboard, mouse, or touch input.
-- Confirmed six project-specific SVG files and no external asset pack or font.
+- Confirmed seven project-specific SVG source files, one locally rendered boot-splash PNG, and no external asset pack or font.
 - Confirmed one ordered five-stage controller plan and a one-result-only shared minigame base.
 - Confirmed README and design notes retain substantial Codex assistance disclosure.
 - Confirmed there is no semantic screen-reader text layer; this remains a documented limitation rather than a tested accessibility claim.

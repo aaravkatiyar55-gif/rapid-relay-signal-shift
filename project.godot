@@ -18,6 +18,9 @@ config/name="Rapid Relay: Signal Shift"
 run/main_scene="res://scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://assets/relay_icon.svg"
+boot_splash/bg_color=Color(0.043, 0.063, 0.149, 1)
+boot_splash/image="res://assets/boot_splash.png"
+boot_splash/fullsize=true
 
 [display]
 
