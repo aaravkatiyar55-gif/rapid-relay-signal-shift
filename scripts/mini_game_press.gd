@@ -1,8 +1,10 @@
-extends Node2D
-
-signal finished(success: bool)
+extends "res://scripts/mini_game_base.gd"
 
 enum Phase { WAITING, ACTIVE, RESULT }
+
+const WAIT_MIN := 1.25
+const WAIT_MAX := 1.9
+const ACTIVE_WINDOW := 0.85
 
 const NAVY := Color("10162e")
 const PANEL := Color("22274a")
@@ -15,26 +17,27 @@ const PURPLE := Color("b59ae8")
 var _font: Font
 var _phase := Phase.WAITING
 var _elapsed := 0.0
-var _resolved := false
-var _feedback := "Stand by..."
+var _wait_duration := 0.0
 
 
 func _ready() -> void:
 
 	_font = ThemeDB.fallback_font
+	_feedback = "Stand by..."
+	_wait_duration = randf_range(WAIT_MIN, WAIT_MAX)
 	queue_redraw()
 
 
 func _process(delta: float) -> void:
 
-	if _phase == Phase.RESULT:
+	if _resolved:
 		return
 
 	_elapsed += delta
-	if _phase == Phase.WAITING and _elapsed >= 1.65:
+	if _phase == Phase.WAITING and _elapsed >= _wait_duration:
 		_phase = Phase.ACTIVE
 		_feedback = "GO — press Space now!"
-	elif _phase == Phase.ACTIVE and _elapsed >= 2.55:
+	if _phase == Phase.ACTIVE and _elapsed >= _wait_duration + ACTIVE_WINDOW:
 		_finish(false, "Too late — signal missed")
 	queue_redraw()
 
@@ -55,12 +58,8 @@ func _finish(success: bool, message: String) -> void:
 
 	if _resolved:
 		return
-	_resolved = true
 	_phase = Phase.RESULT
-	_feedback = message
-	queue_redraw()
-	await get_tree().create_timer(0.85).timeout
-	finished.emit(success)
+	_resolve(success, message)
 
 
 func _draw() -> void:
@@ -75,7 +74,7 @@ func _draw() -> void:
 		lamp_color = LIME
 		label = "GO"
 	elif _phase == Phase.RESULT:
-		lamp_color = LIME if _feedback.begins_with("Good") else CORAL
+		lamp_color = LIME if _result_success else CORAL
 		label = "DONE"
 
 	draw_circle(Vector2(480, 302), 66, Color("0b1024"))

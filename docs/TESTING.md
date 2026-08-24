@@ -1,46 +1,80 @@
 # Testing notes
 
-Date: 2026-08-18
-Environment: Windows, Godot 4.7.1 stable console build, headless local runs.
+Date: 2026-08-24
+Workspace: `rapid-relay-rebuild`
+Environment: Windows, Godot 4.7.1 stable, Compatibility renderer.
+
+## What was checked
+
+Testing is separated into source inspection, automated Godot checks, local runtime rendering, local browser checks, and public verification. A check is not listed as manual owner testing unless a person actually played it.
 
 ## Source inspection
 
-- Checked the exact `rapid-relay-rebuild` workspace: six scenes, seven GDScript files, four local SVG assets, four 960×540 local screenshots, README, test scripts, and a 960×540 Compatibility-renderer Godot project were present.
-- No source reference to the prohibited older project names was found.
+- Confirmed one Godot 4 project with a 960×540 viewport and Web export preset.
+- Confirmed nine runtime scenes: menu, game controller, five minigames, win, and death.
+- Confirmed five distinct minigame scripts with keyboard, mouse, or touch input.
+- Confirmed six project-specific SVG files and no external asset pack or font.
+- Confirmed one ordered five-stage controller plan and a one-result-only shared minigame base.
+- Confirmed README and design notes retain substantial Codex assistance disclosure.
+- Confirmed there is no semantic screen-reader text layer; this remains a documented limitation rather than a tested accessibility claim.
 
-## Automated and local runtime checks
+## Automated Godot results
 
-| Test | Input or action | Observed result | Status |
+All seven suites below were run with the Godot 4.7.1 console executable. Final suite runs exited `0` with no script/runtime error and no failed assertion.
+
+| Suite | Main cases observed | Assertions | Result |
+| --- | --- | ---: | --- |
+| Pulse Press | randomized wait range, early input, correct input, late input, duplicate guard | 5 | Passed |
+| Orb Catch | pointer hit, reticle move, keyboard capture, wrong click, timeout | 5 | Passed |
+| Wave Tuner | both directions, long-frame crossing, stable hold, hold reset, late target, timeout, duplicate guard, reset-timer cancellation | 19 | Passed |
+| Relay Route | full sequence, wrong arrow, timeout, duplicate guard, stopped state, reset | 7 | Passed |
+| Core Dock | correct drag, empty drop retry, wrong socket, keyboard dock, timeout, duplicate guard, reset | 10 | Passed |
+| Five-stage flow | real child result signals, exact order/metadata, full win, three-loss death, final-stage recovery, duplicate controller result | 21 | Passed |
+| Navigation | real Enter/Esc dispatch, result-delay escape, menu focus/start, fresh replay, win/death buttons, back to menu | 13 | Passed |
+| **Total** |  | **80** | **Passed** |
+
+## Local runtime and visual checks
+
+| Check | Action | Observed result | Status |
 | --- | --- | --- | --- |
-| Project startup | Ran the project for five headless frames after changing SVG usage to imported textures | Godot started without console errors or SVG asset-load warnings | Passed |
-| Desktop startup | Ran the project for five non-headless frames | Godot exited 0 using the Compatibility renderer; it selected ANGLE after a GPU-driver warning | Passed |
-| Runtime screenshots | Ran the non-headless screenshot capture script | Saved four readable PNGs for menu, active game HUD, win, and death states | Passed |
-| SVG export-safety check | Loaded the menu, HUD, and both ending scenes through the automated runs | Imported SVG textures loaded without the earlier raw-image export warnings | Passed |
-| Web export preflight | Ran the Web preset through Godot’s headless exporter | Blocked: required Godot 4.7.1 Web export templates are not installed on this machine | Not completed |
-| Pulse Press, early | Sent Space while the test was waiting | The result signal returned failure | Passed |
-| Pulse Press, success | Advanced the test to GO, then sent Space | The result signal returned success | Passed |
-| Pulse Press, late | Advanced beyond the allowed GO window | The result signal returned failure | Passed |
-| Orb Catch, direct hit | Sent a click at the orb position | The result signal returned success | Passed |
-| Orb Catch, wrong click | Sent a click outside the orb | The result signal returned failure | Passed |
-| Orb Catch, timeout | Advanced the orb beyond its time limit | The result signal returned failure | Passed |
-| Four-round route | Simulated four successful minigame result signals in the controller | Alternated Press, Catch, Press, Catch and opened `WinScene` | Passed |
-| Loss route | Simulated three failed minigame result signals in the controller | Signal bars changed from 3 to 0 and opened `DeathScene` | Passed |
-| End-scene focus | Checked the first button after each ending scene loaded | `Play Again` and `Try Again` each had focus | Passed |
-| Menu start route | Loaded MainMenu and invoked its Start Relay action | Game scene opened with round 1 and three signal bars | Passed |
-| Replay and menu routes | Loaded ending scenes and invoked Try Again, Play Again, and Back to Menu actions | Each route opened the expected fresh scene | Passed |
+| Non-headless renderer | Ran screenshot capture with Godot 4.7.1 | Compatibility mode started through ANGLE after a known Intel OpenGL driver warning | Passed |
+| Runtime screenshots | Captured menu, all five minigames, win, and death | Nine 960×540 PNG files saved from the actual runtime | Passed |
+| Screenshot failure guard | Locked one output file during a negative capture run, then ran normally | Failed save exited `1`; final unlocked capture saved all nine and exited `0` | Passed |
+| Layout review | Inspected all nine generated images | Instructions, route nodes, backup text, buttons, gameplay objects, and ending copy were visible without overlap | Passed |
+| Colour-independent state | Inspected HUD and result visuals | Text plus rings, crosses, filled nodes, backup count, and status copy accompany colours | Passed |
+| Web icon branding | Exported with the project relay icon | Browser icon files show the relay antenna instead of default Godot artwork | Passed |
+| Export packaging | Exported the Web release preset | Export succeeded; runtime-only package was about 175 KB plus Godot Web runtime | Passed |
 
-## Visible manual testing
+The display server warned that the Intel HD Graphics 4000 driver has low-quality OpenGL 3.3 support and automatically selected ANGLE. The run completed successfully, so this is recorded as an environment warning rather than a game failure.
 
-Not completed. The local non-headless screenshot capture ran successfully, but Computer Use could not consistently capture the Godot application window. Tab/Enter, mouse playthrough, and visible 960×540 layout therefore remain unverified by a person playing the window.
+## Local Chrome Web check
 
-## Deployed browser testing
+The exported build was served from `127.0.0.1` and opened in the connected Chrome browser.
 
-Not completed. No public Web export or demo exists because the required Godot 4.7.1 Web export templates are not installed.
+| Check | Observed result | Status |
+| --- | --- | --- |
+| Page load | Title was `Rapid Relay: Signal Shift`; the Godot canvas rendered the current menu | Passed |
+| Browser console | No warning or error was returned after load and interaction checks | Passed |
+| Menu keyboard start | Enter activated the focused Start button and opened Pulse Press | Passed |
+| Web font check | A Unicode arrow first rendered as a missing-glyph square | Failed, then fixed |
+| Glyph regression | Replaced the arrow with ASCII `>`; re-exported and reloaded | Passed |
+| Failure path input | Late/incorrect inputs visibly removed backup channels and advanced the route | Passed |
+| Complete browser win route | Background canvas timing was throttled during automated waits, so reaction timing was not reliable | Not claimed |
 
-## Known limitations
+## Public verification
 
-- These are headless logic checks, not a replacement for a person playing the visible game window.
-- Manual keyboard Tab/Enter interaction, mouse playthrough, and 960×540 visual layout still need a visible-window check. Computer Use could not capture the Godot window on this machine during this session.
-- An attempted headless synthetic Tab/Enter test did not activate focused Godot buttons, so it is not counted as keyboard-interaction evidence.
-- The local Web export needs Godot 4.7.1 Web templates before a playable web build can be generated.
-- No public repository, public demo, tracker time, or Stardance submission evidence exists yet.
+The repository and GitHub Pages URLs already exist. The new five-minigame build is not counted as publicly verified until its commit is pushed, Pages is updated, and the fresh live URL is checked again.
+
+## Still requires a human play pass
+
+- Complete one full win route in a visible browser or Godot window.
+- Complete one deliberate three-loss route.
+- Confirm Core Dock drag feel with a real pointer and touch device if available.
+- Confirm the scaled 960×540 canvas is comfortable on a real phone.
+
+## Evidence boundaries
+
+- The automated suites verify game logic, state transitions, and reset behavior.
+- Runtime screenshots verify rendered layout at selected moments, not a complete human playthrough.
+- Local Chrome checks verify the exported canvas loads and accepts input, not that every timing challenge was manually completed.
+- No coding hours, tracker time, public deployment update, Stardance approval, or reward is inferred from these tests.
