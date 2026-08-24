@@ -4,7 +4,7 @@ An original Godot reflex-game collection about rebuilding a courier drone's rout
 
 ![Wave Tuner gameplay with the five-stage relay HUD](screenshots/relay-round.png)
 
-**[Existing browser demo — five-game update pending](https://aaravkatiyar55-gif.github.io/rapid-relay-signal-shift/)** · [View the source](https://github.com/aaravkatiyar55-gif/rapid-relay-signal-shift)
+**[Play the browser demo](https://aaravkatiyar55-gif.github.io/rapid-relay-signal-shift/)** · [View the source](https://github.com/aaravkatiyar55-gif/rapid-relay-signal-shift)
 
 ## What it is
 
@@ -106,7 +106,7 @@ The source, visual assets, story copy, tests, and documentation in this practice
 - The gameplay HUD is drawn on the Godot canvas and does not currently expose a screen-reader text layer.
 - The fixed 960×540 game canvas scales in the browser instead of rearranging into a phone-specific layout.
 - Automated logic tests and runtime screenshots are not a substitute for a person completing every route manually.
-- Browser automation verified loading, clean console output, menu rendering, and keyboard start; background canvas timing made a complete automated browser playthrough unreliable.
+- Browser automation verified local and public loading, clean game-origin console output, menu rendering, and keyboard start; background canvas timing made a complete automated browser playthrough unreliable.
 - This substantial AI-assisted build must not be represented as satisfying a none-to-minimal-AI mission without explicit organizer confirmation.
 
 ## AI disclosure

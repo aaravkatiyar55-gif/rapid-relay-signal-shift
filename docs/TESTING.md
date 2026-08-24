@@ -63,7 +63,16 @@ The exported build was served from `127.0.0.1` and opened in the connected Chrom
 
 ## Public verification
 
-The repository and GitHub Pages URLs already exist. The new five-minigame build is not counted as publicly verified until its commit is pushed, Pages is updated, and the fresh live URL is checked again.
+The source commits were pushed to the existing public repository and the Web export was pushed to its existing `gh-pages` branch on 2026-08-24.
+
+| Check | Observed result | Status |
+| --- | --- | --- |
+| Public build bytes | Live `index.pck` was 303,468 bytes and its SHA-256 matched the final local export | Passed |
+| Uncached live load | Chrome showed the project-specific neon boot screen and then the five-test KITE menu | Passed |
+| Public keyboard start | Enter opened `STAGE 01 / 05` and rendered Pulse Press | Passed |
+| Game-origin console | No warning or error came from the GitHub Pages game origin | Passed |
+
+One unrelated warning came from a locally installed Chrome extension, not from the game URL. A complete public win route is still not claimed.
 
 ## Still requires a human play pass
 
@@ -77,4 +86,4 @@ The repository and GitHub Pages URLs already exist. The new five-minigame build 
 - The automated suites verify game logic, state transitions, and reset behavior.
 - Runtime screenshots verify rendered layout at selected moments, not a complete human playthrough.
 - Local Chrome checks verify the exported canvas loads and accepts input, not that every timing challenge was manually completed.
-- No coding hours, tracker time, public deployment update, Stardance approval, or reward is inferred from these tests.
+- No coding hours, tracker time, Stardance approval, mission eligibility, or reward is inferred from these tests.
